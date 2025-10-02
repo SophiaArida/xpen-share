@@ -8,7 +8,6 @@ import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
@@ -37,9 +36,10 @@ public class UserRepositoryFacade {
     }
 
     @Transactional
-    UserEntity create(UserEntity e) {
+    public UserEntity create(UserEntity e) {
+        System.out.println("Hello from UserRepoFacade.create()");
         Timestamp now = new Timestamp(new Date().getTime());
-        e.setCreated_at(now);
+        e.setCreatedAt(now);
         e.setEmail(e.getEmail().toLowerCase());
         return userRepository.save(e);
     }

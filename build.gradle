@@ -3,6 +3,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.7"
     id("io.micronaut.test-resources") version "4.5.4"
     id("io.micronaut.aot") version "4.5.4"
+    id("java")
 }
 
 version = "0.1"
@@ -17,6 +18,7 @@ dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.data:micronaut-data-tx-hibernate")
     implementation("io.micronaut.kafka:micronaut-kafka")
@@ -33,12 +35,15 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("io.micronaut:micronaut-inject-java")
-
-
+    runtimeOnly("org.yaml:snakeyaml")
 }
 
 
 application {
+    applicationDefaultJvmArgs = [
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+            "-Xshare:off"
+    ]
     mainClass = "com.expenshare.Application"
 }
 java {
