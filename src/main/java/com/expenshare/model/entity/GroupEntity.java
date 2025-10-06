@@ -2,9 +2,13 @@ package com.expenshare.model.entity;
 
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.AUTO;
 
@@ -12,24 +16,37 @@ import static jakarta.persistence.GenerationType.AUTO;
 @Entity
 @Table(name = "groups")
 public class GroupEntity {
+
     @Id
     @GeneratedValue(strategy = AUTO)
-    private Long id;
+    @Column(name = "group_id")
+    private Long groupId;
 
-    @NotNull
+    @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private java.sql.Timestamp created_at;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 
-    public Long getId() {
-        return id;
+    // ✅ Correct relationship mapping
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<GroupMemberEntity> members = new HashSet<>();
+
+    // ✅ Constructors
+    public GroupEntity() {}
+    public GroupEntity(String name) {
+        this.name = name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // ✅ Getters & Setters
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
@@ -40,11 +57,19 @@ public class GroupEntity {
         this.name = name;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Set<GroupMemberEntity> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<GroupMemberEntity> members) {
+        this.members = members;
     }
 }

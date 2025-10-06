@@ -3,31 +3,49 @@ package com.expenshare.model.entity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.AUTO;
 
 @Serdeable
 @Entity
-@Table(name = "group_members", uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "user_id"}))
+@Table(
+        name = "group_members",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"group_id", "user_id"})
+)
 public class GroupMemberEntity {
+
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @ManyToOne
+    // ✅ Corrected field name: group (not groupId)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
-    private GroupEntity group_id;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private GroupEntity group;
 
-    @ManyToOne
+    // ✅ Corrected field name: user (not userId)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user_id;
+    private UserEntity user;
 
-    @NotNull
-    @Column(name = "added_at", nullable = false)
-    private java.sql.Timestamp added_at;
+    @Column(name = "added_at", nullable = false, updatable = false)
+    private Instant addedAt;
 
+    // ✅ Constructors
+    public GroupMemberEntity() {}
+
+    public GroupMemberEntity(GroupEntity group, UserEntity user) {
+        this.group = group;
+        this.user = user;
+    }
+
+    // ✅ Getters & Setters
     public Long getId() {
         return id;
     }
@@ -36,27 +54,27 @@ public class GroupMemberEntity {
         this.id = id;
     }
 
-    public GroupEntity getGroup_id() {
-        return group_id;
+    public GroupEntity getGroup() {
+        return group;
     }
 
-    public void setGroup_id(GroupEntity group_id) {
-        this.group_id = group_id;
+    public void setGroup(GroupEntity group) {
+        this.group = group;
     }
 
-    public UserEntity getUser_id() {
-        return user_id;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUser_id(UserEntity user_id) {
-        this.user_id = user_id;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
-    public Timestamp getAdded_at() {
-        return added_at;
+    public Instant getAddedAt() {
+        return addedAt;
     }
 
-    public void setAdded_at(Timestamp added_at) {
-        this.added_at = added_at;
+    public void setAddedAt(Instant addedAt) {
+        this.addedAt = addedAt;
     }
 }
