@@ -1,54 +1,34 @@
-package com.expenshare.model.entity;
+package com.expenshare.model.dto.expense;
 
+import com.expenshare.model.entity.ExpenseEntity;
 import io.micronaut.serde.annotation.Serdeable;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-
-import static jakarta.persistence.GenerationType.AUTO;
+import java.util.List;
 
 @Serdeable
-@Entity
-@Table(name = "expenses")
-public class ExpenseEntity {
-    @Id
-    @GeneratedValue(strategy = AUTO)
-    private Long id;
-
-    @Column(name = "group_id", nullable = false)
+public class ExpenseDto {
+    private Long expenseId;
     private Long groupId;
-
-    @Column(name = "paid_by", nullable = false)
     private Long paidBy;
-
-    @Column(name = "amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal amount;
-
-    @Column(name = "description", nullable = false)
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "split_type", nullable = false)
-    private SplitType splitType;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false,  columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private List<ShareDto> split;
     private Instant createdAt;
+    @NotNull
+    private ExpenseEntity.SplitType splitType;
 
-    public enum SplitType {
-        EQUAL,
-        EXACT,
-        PERCENT
+    // Getters and setters
+    // ...
+
+    public Long getExpenseId() {
+        return expenseId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setExpenseId(Long expenseId) {
+        this.expenseId = expenseId;
     }
 
     public Long getGroupId() {
@@ -83,12 +63,12 @@ public class ExpenseEntity {
         this.description = description;
     }
 
-    public SplitType getSplitType() {
-        return splitType;
+    public List<ShareDto> getSplit() {
+        return split;
     }
 
-    public void setSplitType(SplitType splitType) {
-        this.splitType = splitType;
+    public void setSplit(List<ShareDto> split) {
+        this.split = split;
     }
 
     public Instant getCreatedAt() {
@@ -97,5 +77,13 @@ public class ExpenseEntity {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public ExpenseEntity.SplitType getSplitType() {
+        return splitType;
+    }
+
+    public void setSplitType(ExpenseEntity.SplitType splitType) {
+        this.splitType = splitType;
     }
 }

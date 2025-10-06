@@ -1,10 +1,8 @@
 package com.expenshare.model.entity;
 
-import io.micronaut.data.annotation.Relation;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -18,15 +16,45 @@ public class ExpenseShareEntity {
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @ManyToOne
+    @NotNull
     @JoinColumn(name = "expense_id", nullable = false)
-//            onDelete = ForeignKeyAction.CASCADE)
-    private ExpenseEntity expense_id;
+    private Long expenseId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user_id;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(name = "share_amount", nullable = false, precision = 18, scale = 2)
-    private BigDecimal share_amount; // Positive = owes, Negative = is owed
+    private BigDecimal shareAmount; // Positive = owes, Negative = is owed
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getExpenseId() {
+        return expenseId;
+    }
+
+    public void setExpenseId(Long expenseId) {
+        this.expenseId = expenseId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public BigDecimal getShareAmount() {
+        return shareAmount;
+    }
+
+    public void setShareAmount(BigDecimal shareAmount) {
+        this.shareAmount = shareAmount;
+    }
 }

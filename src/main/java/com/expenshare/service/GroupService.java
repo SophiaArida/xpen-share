@@ -55,8 +55,14 @@ public class GroupService {
 
     public GroupDto getGroup(Long groupId) {
         GroupEntity group = groupRepositoryFacade.findGroup(groupId)
-                .orElseThrow(() -> new NotFoundException("Group not found"));
+                .orElseThrow(() -> new NotFoundException("Group not found with id " + groupId));
         return groupMapper.toDTO(group);
+    }
+
+    public GroupEntity getGroupEntity(Long groupId) {
+        GroupEntity group = groupRepositoryFacade.findGroup(groupId)
+                .orElseThrow(() -> new NotFoundException("Group not found with id " + groupId));
+        return group;
     }
 
     public GroupDto addMembers(Long groupId, AddMembersRequest request) {
