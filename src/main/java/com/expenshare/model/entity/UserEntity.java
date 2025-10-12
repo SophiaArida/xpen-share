@@ -5,7 +5,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.AUTO;
 
@@ -35,7 +35,7 @@ public class UserEntity {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private java.sql.Timestamp createdAt;
+    private Instant createdAt;
 
     public Long getUserId() {
         return userId;
@@ -77,11 +77,11 @@ public class UserEntity {
         this.address = address;
     }
 
-    public Timestamp getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -22,7 +22,6 @@ public class ExpenseController {
      */
     @Post(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
     public HttpResponse<ExpenseDto> createExpense(@Body @Valid CreateExpenseRequest request) {
-        System.out.println("Hellooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
         ExpenseDto created = expenseService.createExpense(request);
         return HttpResponse.created(created);
     }

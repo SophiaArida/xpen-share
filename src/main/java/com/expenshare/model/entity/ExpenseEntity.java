@@ -34,7 +34,7 @@ public class ExpenseEntity {
     private SplitType splitType;
 
     @NotNull
-    @Column(name = "created_at", nullable = false,  columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     public enum SplitType {

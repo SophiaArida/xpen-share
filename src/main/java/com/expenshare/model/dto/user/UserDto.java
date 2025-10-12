@@ -1,6 +1,7 @@
 package com.expenshare.model.dto.user;
 
-import java.sql.Timestamp;
+import java.time.Instant;
+
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
@@ -10,7 +11,7 @@ public class UserDto {
     public String email;
     public String mobileNumber;
     public AddressDto address;
-    public Timestamp createdAt;
+    public Instant createdAt;
 
     public Long getUserId() {
         return userId;
@@ -52,11 +53,11 @@ public class UserDto {
         this.address = address;
     }
 
-    public Timestamp getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 }

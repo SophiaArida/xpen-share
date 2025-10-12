@@ -3,7 +3,6 @@ package com.expenshare.model.entity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -25,7 +24,6 @@ public class GroupEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 

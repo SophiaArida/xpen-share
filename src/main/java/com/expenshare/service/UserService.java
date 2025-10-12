@@ -24,9 +24,7 @@ public class UserService {
             throw new ConflictException("Email already exists: " + req.email);
         }
         UserEntity entity = mapper.toEntity(req);
-        System.out.println("Hello from UserService.createUser() after mapper.toEntity");
         UserEntity saved = facade.create(entity);
-        System.out.println("Hello from UserService.createUser() after facade.create");
         return mapper.toDto(saved);
     }
 

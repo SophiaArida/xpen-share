@@ -19,7 +19,6 @@ public class GroupController {
 
     @Post
     public HttpResponse<GroupDto> createGroup(@Body @Valid CreateGroupRequest request) {
-        System.out.println("Hello from GroupController.createGroup()");
         GroupDto group = groupService.createGroup(request);
         return HttpResponse.created(group);
     }

@@ -31,7 +31,6 @@ public class GroupService {
 
     public GroupDto createGroup(CreateGroupRequest request) {
         // resolve all member IDs via the UserRepositoryFacade
-        System.out.println("Hello from GroupService.createGroup");
         List<UserEntity> members = request.getMembers().stream()
                 .map(userRepositoryFacade::getOrThrow) // throws NotFoundException if missing
                 .collect(Collectors.toList());
