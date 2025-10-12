@@ -34,4 +34,8 @@ public class UserService {
         UserEntity entity = facade.getOrThrow(id);
         return mapper.toDto(entity);
     }
+
+    public UserEntity getUserEntity(long id){
+        return facade.getOrThrow(id);
+    }
 }

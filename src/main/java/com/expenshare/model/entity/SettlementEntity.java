@@ -4,7 +4,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 import static jakarta.persistence.GenerationType.AUTO;
 
@@ -14,19 +14,19 @@ import static jakarta.persistence.GenerationType.AUTO;
 public class SettlementEntity {
     @Id
     @GeneratedValue(strategy = AUTO)
-    private Long id;
+    private Long settlementId;
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
-    private GroupEntity group_id;
+    private GroupEntity groupId;
 
     @ManyToOne
     @JoinColumn(name = "from_user_id", nullable = false)
-    private UserEntity from_user_id;
+    private UserEntity fromUserId;
 
     @ManyToOne
     @JoinColumn(name = "to_user_id", nullable = false)
-    private UserEntity to_user_id;
+    private UserEntity toUserId;
 
     @Column(name = "amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal amount;
@@ -46,10 +46,10 @@ public class SettlementEntity {
     private Status status = Status.CONFIRMED;
 
     @Column(name = "created_at", nullable = false)
-    private java.sql.Timestamp created_at;
+    private Instant createdAt;
 
     @Column(name = "confirmed_at")
-    private java.sql.Timestamp confirmed_at;
+    private Instant confirmedAt;
 
     public enum Method {
         CASH,
@@ -64,36 +64,36 @@ public class SettlementEntity {
         CANCELED
     }
 
-    public Long getId() {
-        return id;
+    public Long getSettlementId() {
+        return settlementId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSettlementId(Long settlementId) {
+        this.settlementId = settlementId;
     }
 
-    public GroupEntity getGroup_id() {
-        return group_id;
+    public GroupEntity getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(GroupEntity group_id) {
-        this.group_id = group_id;
+    public void setGroupId(GroupEntity groupId) {
+        this.groupId = groupId;
     }
 
-    public UserEntity getFrom_user_id() {
-        return from_user_id;
+    public UserEntity getFromUserId() {
+        return fromUserId;
     }
 
-    public void setFrom_user_id(UserEntity from_user_id) {
-        this.from_user_id = from_user_id;
+    public void setFromUserId(UserEntity fromUserId) {
+        this.fromUserId = fromUserId;
     }
 
-    public UserEntity getTo_user_id() {
-        return to_user_id;
+    public UserEntity getToUserId() {
+        return toUserId;
     }
 
-    public void setTo_user_id(UserEntity to_user_id) {
-        this.to_user_id = to_user_id;
+    public void setToUserId(UserEntity toUserId) {
+        this.toUserId = toUserId;
     }
 
     public BigDecimal getAmount() {
@@ -136,19 +136,19 @@ public class SettlementEntity {
         this.status = status;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getConfirmed_at() {
-        return confirmed_at;
+    public Instant getConfirmedAt() {
+        return confirmedAt;
     }
 
-    public void setConfirmed_at(Timestamp confirmed_at) {
-        this.confirmed_at = confirmed_at;
+    public void setConfirmedAt(Instant confirmedAt) {
+        this.confirmedAt = confirmedAt;
     }
 }
