@@ -3,6 +3,7 @@ package com.expenshare.model.entity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
@@ -22,6 +23,7 @@ public class UserEntity {
     private String name;
 
     @NotNull
+    @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 

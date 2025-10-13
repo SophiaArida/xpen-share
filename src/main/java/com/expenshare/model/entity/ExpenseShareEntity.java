@@ -2,7 +2,6 @@ package com.expenshare.model.entity;
 
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -16,12 +15,13 @@ public class ExpenseShareEntity {
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expense_id", nullable = false)
-    private Long expenseId;
+    private ExpenseEntity expense;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Column(name = "share_amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal shareAmount; // Positive = owes, Negative = is owed
@@ -34,20 +34,20 @@ public class ExpenseShareEntity {
         this.id = id;
     }
 
-    public Long getExpenseId() {
-        return expenseId;
+    public ExpenseEntity getExpense() {
+        return expense;
     }
 
-    public void setExpenseId(Long expenseId) {
-        this.expenseId = expenseId;
+    public void setExpense(ExpenseEntity expense) {
+        this.expense = expense;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public BigDecimal getShareAmount() {

@@ -21,13 +21,11 @@ public class GroupMemberEntity {
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    // ✅ Corrected field name: group (not groupId)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private GroupEntity group;
 
-    // ✅ Corrected field name: user (not userId)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -35,7 +33,6 @@ public class GroupMemberEntity {
     @Column(name = "added_at", nullable = false, updatable = false)
     private Instant addedAt;
 
-    // ✅ Constructors
     public GroupMemberEntity() {}
 
     public GroupMemberEntity(GroupEntity group, UserEntity user) {
@@ -43,7 +40,6 @@ public class GroupMemberEntity {
         this.user = user;
     }
 
-    // ✅ Getters & Setters
     public Long getId() {
         return id;
     }

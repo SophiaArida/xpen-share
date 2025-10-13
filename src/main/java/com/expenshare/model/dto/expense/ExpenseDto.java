@@ -21,12 +21,10 @@ public class ExpenseDto {
     private ExpenseEntity.SplitType splitType;
 
     // Getters and setters
-    // ...
 
     public Long getExpenseId() {
         return expenseId;
     }
-
     public void setExpenseId(Long expenseId) {
         this.expenseId = expenseId;
     }
@@ -34,7 +32,6 @@ public class ExpenseDto {
     public Long getGroupId() {
         return groupId;
     }
-
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
@@ -42,7 +39,6 @@ public class ExpenseDto {
     public Long getPaidBy() {
         return paidBy;
     }
-
     public void setPaidBy(Long paidBy) {
         this.paidBy = paidBy;
     }
@@ -50,7 +46,6 @@ public class ExpenseDto {
     public BigDecimal getAmount() {
         return amount;
     }
-
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
@@ -58,7 +53,6 @@ public class ExpenseDto {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -66,7 +60,6 @@ public class ExpenseDto {
     public List<ShareDto> getSplit() {
         return split;
     }
-
     public void setSplit(List<ShareDto> split) {
         this.split = split;
     }
@@ -74,7 +67,6 @@ public class ExpenseDto {
     public Instant getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
@@ -82,7 +74,6 @@ public class ExpenseDto {
     public ExpenseEntity.SplitType getSplitType() {
         return splitType;
     }
-
     public void setSplitType(ExpenseEntity.SplitType splitType) {
         this.splitType = splitType;
     }

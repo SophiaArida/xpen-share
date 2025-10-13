@@ -1,9 +1,11 @@
 package com.expenshare.model.dto.user;
 
 import io.micronaut.serde.annotation.Serdeable;
+import jakarta.validation.constraints.NotBlank;
 
 @Serdeable
 public class AddressDto {
+    @NotBlank
     public String line1;
     public String line2;
     public String city;

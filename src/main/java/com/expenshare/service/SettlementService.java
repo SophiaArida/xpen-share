@@ -26,11 +26,11 @@ public class SettlementService {
     public SettlementDto createSettlement(CreateSettlementRequest request) {
         SettlementEntity entity = new SettlementEntity();
         GroupEntity group = groupService.getGroupEntity(request.getGroupId());
-        entity.setGroupId(group);
+        entity.setGroup(group);
         UserEntity fromUser = userService.getUserEntity(request.getFromUserId());
-        entity.setFromUserId(fromUser);
+        entity.setFromUser(fromUser);
         UserEntity toUser = userService.getUserEntity(request.getToUserId());
-        entity.setToUserId(toUser);
+        entity.setToUser(toUser);
         entity.setAmount(request.getAmount());
         entity.setMethod(request.getMethod());
         entity.setNote(request.getNote());

@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 public interface SettlementMapper {
 
 //    SettlementEntity toEntity(CreateSettlementRequest req);
-    @Mapping(target = "groupId", expression = "java(entity.getGroupId().getGroupId())")
-    @Mapping(target = "fromUserId", expression = "java(entity.getFromUserId().getUserId())")
-    @Mapping(target = "toUserId", expression = "java(entity.getToUserId().getUserId())")
+    @Mapping(target = "groupId", expression = "java(entity.getGroup().getGroupId())")
+    @Mapping(target = "fromUserId", expression = "java(entity.getFromUser().getUserId())")
+    @Mapping(target = "toUserId", expression = "java(entity.getToUser().getUserId())")
 
     SettlementDto toDto (SettlementEntity entity);
 }

@@ -23,7 +23,7 @@ public class ExpenseRepositoryFacade {
     @Transactional
     public ExpenseEntity saveWithShares(ExpenseEntity expense, List<ExpenseShareEntity> shares) {
         ExpenseEntity saved = expenseRepository.save(expense);
-        shares.forEach(s -> s.setExpenseId(saved.getId()));
+        shares.forEach(s -> s.setExpense(saved));
         shareRepository.saveAll(shares);
         return saved;
     }
@@ -34,7 +34,7 @@ public class ExpenseRepositoryFacade {
 
     public List<ExpenseShareEntity> findSharesByExpenseId(Long expenseId) {
         return shareRepository.findAll().stream()
-                .filter(s -> s.getExpenseId().equals(expenseId))
+                .filter(s -> s.getExpense().getId().equals(expenseId))
                 .toList();
     }
 }

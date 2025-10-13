@@ -18,15 +18,15 @@ public class SettlementEntity {
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
-    private GroupEntity groupId;
+    private GroupEntity group;
 
     @ManyToOne
     @JoinColumn(name = "from_user_id", nullable = false)
-    private UserEntity fromUserId;
+    private UserEntity fromUser;
 
     @ManyToOne
     @JoinColumn(name = "to_user_id", nullable = false)
-    private UserEntity toUserId;
+    private UserEntity toUser;
 
     @Column(name = "amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal amount;
@@ -72,28 +72,28 @@ public class SettlementEntity {
         this.settlementId = settlementId;
     }
 
-    public GroupEntity getGroupId() {
-        return groupId;
+    public GroupEntity getGroup() {
+        return group;
     }
 
-    public void setGroupId(GroupEntity groupId) {
-        this.groupId = groupId;
+    public void setGroup(GroupEntity group) {
+        this.group = group;
     }
 
-    public UserEntity getFromUserId() {
-        return fromUserId;
+    public UserEntity getFromUser() {
+        return fromUser;
     }
 
-    public void setFromUserId(UserEntity fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromUser(UserEntity fromUser) {
+        this.fromUser = fromUser;
     }
 
-    public UserEntity getToUserId() {
-        return toUserId;
+    public UserEntity getToUser() {
+        return toUser;
     }
 
-    public void setToUserId(UserEntity toUserId) {
-        this.toUserId = toUserId;
+    public void setToUser(UserEntity toUser) {
+        this.toUser = toUser;
     }
 
     public BigDecimal getAmount() {

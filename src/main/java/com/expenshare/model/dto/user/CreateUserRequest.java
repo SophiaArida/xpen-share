@@ -1,13 +1,18 @@
 package com.expenshare.model.dto.user;
 
 import io.micronaut.serde.annotation.Serdeable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 @Serdeable
 public class CreateUserRequest {
-    public String name;
-    public String email;
-    public String mobileNumber;
-    public AddressDto address;
+    @NotNull
+    private String name;
+    @NotNull
+    @Email
+    private String email;
+    private String mobileNumber;
+    private AddressDto address;
 
     public String getName() {
         return name;

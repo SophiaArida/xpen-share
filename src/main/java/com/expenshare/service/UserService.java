@@ -20,8 +20,8 @@ public class UserService {
     }
 
     public UserDto createUser(CreateUserRequest req) {
-        if (facade.emailExists(req.email)) {
-            throw new ConflictException("Email already exists: " + req.email);
+        if (facade.emailExists(req.getEmail())) {
+            throw new ConflictException("Email already exists: " + req.getEmail());
         }
         UserEntity entity = mapper.toEntity(req);
         UserEntity saved = facade.create(entity);

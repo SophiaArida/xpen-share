@@ -8,7 +8,9 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "jsr330", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ExpenseShareMapper {
-    @Mapping(target = "expenseId", source = "expenseId")
+    @Mapping(target = "expense.id", source = "expenseId")
     ExpenseShareEntity toEntity(ShareDto dto, Long expenseId);
+    @Mapping(target = "userId", source = "e.user.userId")
+    @Mapping(target = "share", source = "shareAmount")
     ShareDto toDto(ExpenseShareEntity e);
 }

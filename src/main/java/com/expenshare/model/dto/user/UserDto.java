@@ -6,12 +6,12 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public class UserDto {
-    public Long userId;
-    public String name;
-    public String email;
-    public String mobileNumber;
-    public AddressDto address;
-    public Instant createdAt;
+    private Long userId;
+    private String name;
+    private String email;
+    private String mobileNumber;
+    private AddressDto address;
+    private Instant createdAt;
 
     public Long getUserId() {
         return userId;

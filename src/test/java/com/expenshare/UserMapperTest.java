@@ -22,10 +22,10 @@ class UserMapperTest {
         address.state = "Egypt";
 
         CreateUserRequest req = new CreateUserRequest();
-        req.name = "Bob";
-        req.email = "bob@example.com";
-        req.mobileNumber = "987654321";
-        req.address = address;
+        req.setName("Bob");
+        req.setEmail("bob@example.com");
+        req.setMobileNumber("987654321");
+        req.setAddress(address);
 
         UserEntity entity = mapper.toEntity(req);
         assertEquals("Bob", entity.getName());

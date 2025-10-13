@@ -137,7 +137,7 @@ public class ExpenseService {
 
         // 🔹 4. Save expense
         ExpenseEntity entity = new ExpenseEntity();
-        entity.setGroupId(req.getGroupId());
+        entity.setGroup(groupService.getGroupEntity(req.getGroupId()));
         entity.setPaidBy(req.getPaidBy());
         entity.setAmount(req.getAmount());
         entity.setDescription(req.getDescription());
@@ -147,7 +147,8 @@ public class ExpenseService {
         List<ExpenseShareEntity> shareEntities = split.stream()
                 .map(dto -> {
                     ExpenseShareEntity s = new ExpenseShareEntity();
-                    s.setUserId(dto.getUserId());
+//                    s.setUser();
+//                    s.setUser(dto.getUserId());
                     s.setShareAmount(dto.getShare());
                     return s;
                 })
@@ -158,7 +159,7 @@ public class ExpenseService {
         // 🔹 5. Build response
         ExpenseDto response = new ExpenseDto();
         response.setExpenseId(saved.getId());
-        response.setGroupId(saved.getGroupId());
+        response.setGroupId(saved.getGroup().getGroupId());
         response.setPaidBy(saved.getPaidBy());
         response.setAmount(saved.getAmount());
         response.setDescription(saved.getDescription());

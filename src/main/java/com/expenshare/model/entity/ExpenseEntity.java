@@ -3,6 +3,8 @@ package com.expenshare.model.entity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,8 +19,10 @@ public class ExpenseEntity {
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @Column(name = "group_id", nullable = false)
-    private Long groupId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "group_id", nullable = false)
+    private GroupEntity group;
 
     @Column(name = "paid_by", nullable = false)
     private Long paidBy;
@@ -51,12 +55,11 @@ public class ExpenseEntity {
         this.id = id;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public GroupEntity getGroup() {
+        return group;
     }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroup(GroupEntity group) {
+        this.group = group;
     }
 
     public Long getPaidBy() {

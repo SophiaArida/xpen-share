@@ -16,7 +16,7 @@ public class ExpenseShareRepositoryFacade {
 
     public List<ExpenseShareEntity> findByExpenseId(Long expenseId) {
         return repository.findAll().stream()
-                .filter(s -> s.getExpenseId().equals(expenseId))
+                .filter(s -> s.getExpense().getId().equals(expenseId))
                 .toList();
     }
 
@@ -26,7 +26,7 @@ public class ExpenseShareRepositoryFacade {
 
     public void deleteByExpenseId(Long expenseId) {
         repository.findAll().forEach(s -> {
-            if (s.getExpenseId().equals(expenseId)) {
+            if (s.getExpense().getId().equals(expenseId)) {
                 repository.delete(s);
             }
         });
