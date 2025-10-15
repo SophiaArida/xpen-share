@@ -1,5 +1,7 @@
 package com.expenshare.service;
 
+import com.expenshare.event.EventTopics;
+import com.expenshare.event.KafkaProducer;
 import com.expenshare.model.dto.expense.ShareDto;
 import com.expenshare.model.dto.group.AddMembersRequest;
 import com.expenshare.model.dto.group.GroupDto;
@@ -35,19 +37,22 @@ public class GroupService {
     private final ExpenseShareRepositoryFacade expenseShareRepositoryFacade;
     private final SettlementRepositoryFacade settlementRepositoryFacade;
     private final SettlementMapper settlementMapper;
+    private final KafkaProducer kafkaProducer;
 
     public GroupService(GroupRepositoryFacade groupRepositoryFacade,
                         UserRepositoryFacade userRepositoryFacade,
                         GroupMapper groupMapper,
                         ExpenseShareRepositoryFacade expenseShareRepositoryFacade,
                         SettlementRepositoryFacade settlementRepositoryFacade,
-                        SettlementMapper settlementMapper) {
+                        SettlementMapper settlementMapper,
+                        KafkaProducer kafkaProducer) {
         this.groupRepositoryFacade = groupRepositoryFacade;
         this.userRepositoryFacade = userRepositoryFacade;
         this.groupMapper = groupMapper;
         this.expenseShareRepositoryFacade = expenseShareRepositoryFacade;
         this.settlementRepositoryFacade = settlementRepositoryFacade;
         this.settlementMapper = settlementMapper;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public GroupDto createGroup(CreateGroupRequest request) {
@@ -69,6 +74,35 @@ public class GroupService {
         // reload with members
         GroupEntity finalGroup = groupRepositoryFacade.findGroup(savedGroup.getGroupId())
                 .orElseThrow(() -> new NotFoundException("Group not found after creation"));
+        // publish group created event
+        List<Long> memberIds = members.stream()
+                .map(UserEntity::getUserId)
+                .toList();
+
+        Map<String, Object> groupCreatedPayload = Map.of(
+                "groupId", finalGroup.getGroupId(),
+                "name", finalGroup.getName(),
+                "memberIds", memberIds
+        );
+
+        kafkaProducer.publish(
+                EventTopics.GROUP_CREATED,
+                String.valueOf(finalGroup.getGroupId()),
+                groupCreatedPayload
+        );
+        // publish notification.welcome event
+        Map<String, Object> notificationPayload = Map.of(
+                "targetType", "GROUP",
+                "targetId", finalGroup.getGroupId(),
+                "channel", "IN_APP",
+                "message", "New group created: " + finalGroup.getName()
+        );
+
+        kafkaProducer.publish(
+                EventTopics.NOTIFICATION_WELCOME,
+                "group-" + finalGroup.getGroupId(),
+                notificationPayload
+        );
 
         return groupMapper.toDTO(finalGroup);
     }

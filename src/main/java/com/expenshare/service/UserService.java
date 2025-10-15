@@ -1,5 +1,6 @@
 package com.expenshare.service;
 
+import com.expenshare.event.EventTopics;
 import com.expenshare.event.KafkaProducer;
 import com.expenshare.exception.ConflictException;
 import com.expenshare.repository.facade.UserRepositoryFacade;
@@ -8,6 +9,8 @@ import com.expenshare.model.dto.user.UserDto;
 import com.expenshare.model.entity.UserEntity;
 import com.expenshare.model.mapper.UserMapper;
 import jakarta.inject.Singleton;
+
+import java.util.Map;
 
 @Singleton
 public class UserService {
@@ -29,8 +32,24 @@ public class UserService {
         UserEntity entity = mapper.toEntity(req);
         UserEntity saved = facade.create(entity);
         UserDto dto = mapper.toDto(saved);
+        // publish user created event
+        Map<String, Object> userCreatedPayload = Map.of(
+                "userId", saved.getUserId(),
+                "email", saved.getEmail(),
+                "name", saved.getName()
+        );
+        kafkaProducer.publish(EventTopics.USER_CREATED, String.valueOf(saved.getUserId()), userCreatedPayload);
 
-        kafkaProducer.publishUserCreatedEvent("{\"userId\": " + saved.getUserId() + "}");
+        // publish welcome notification event
+        Map<String, Object> notificationPayload = Map.of(
+                "targetType", "USER",
+                "targetId", saved.getUserId(),
+                "channel", "EMAIL",
+                "message", "Welcome to ExpenShare, " + saved.getName() + "!"
+        );
+        kafkaProducer.publish(EventTopics.NOTIFICATION_WELCOME, "user-" + saved.getUserId(), notificationPayload);
+
+
         return dto;
     }
 

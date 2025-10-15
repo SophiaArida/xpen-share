@@ -1,5 +1,7 @@
 package com.expenshare.service;
 
+import com.expenshare.event.EventTopics;
+import com.expenshare.event.KafkaProducer;
 import com.expenshare.exception.ValidationException;
 import com.expenshare.model.dto.expense.*;
 import com.expenshare.model.entity.*;
@@ -11,10 +13,7 @@ import jakarta.inject.Singleton;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -23,20 +22,19 @@ public class ExpenseService {
     private final ExpenseMapper expenseMapper;
     private final ExpenseShareMapper shareMapper;
     private final ExpenseRepositoryFacade facade;
-//    private final KafkaProducer kafkaProducer;
     private final GroupService groupService;
     private final UserService userService;
+    private final KafkaProducer kafkaProducer;
 
-    //    public ExpenseService(ExpenseMapper expenseMapper, ExpenseShareMapper shareMapper,
-//                          ExpenseRepositoryFacade facade, KafkaProducer kafkaProducer) {
     public  ExpenseService(ExpenseMapper expenseMapper, ExpenseShareMapper shareMapper,
-                           ExpenseRepositoryFacade facade, GroupService groupService, UserService userService) {
+                           ExpenseRepositoryFacade facade, GroupService groupService,
+                           UserService userService, KafkaProducer kafkaProducer) {
         this.expenseMapper = expenseMapper;
         this.shareMapper = shareMapper;
         this.facade = facade;
-//        this.kafkaProducer = kafkaProducer;
         this.groupService = groupService;
         this.userService = userService;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public ExpenseDto createExpense(CreateExpenseRequest req) {
@@ -55,7 +53,6 @@ public class ExpenseService {
         }
 
         int memberCount = memberIds.size();
-        System.out.println("expenseService.createExpense: Done Step 1");
 
         // 2. Each person’s equal share
         List<ShareDto> split = new ArrayList<>();
@@ -124,7 +121,6 @@ public class ExpenseService {
 
             default -> throw new ValidationException("Unsupported split type: " + req.getSplitType());
         }
-        System.out.println("expenseService.createExpense: Done Step 2");
 
         // 3. Save expense
         ExpenseEntity entity = new ExpenseEntity();
@@ -146,7 +142,24 @@ public class ExpenseService {
 
         ExpenseEntity saved = facade.saveWithShares(entity, shareEntities);
 
-        // 4. Build response
+        // 4. publish expense.added event
+        Map<String, Object> expenseAddedPayload = Map.of(
+                "expenseId", saved.getId(),
+                "groupId", saved.getGroup().getGroupId(),
+                "paidBy", saved.getPaidBy(),
+                "amount", saved.getAmount(),
+                "description", saved.getDescription(),
+                "splitType", saved.getSplitType().toString(),
+                "createdAt", saved.getCreatedAt()
+        );
+
+        kafkaProducer.publish(
+                EventTopics.EXPENSE_ADDED,
+                String.valueOf(saved.getGroup().getGroupId()), // key = groupId for partitioning
+                expenseAddedPayload
+        );
+
+        // 5. Build response
         ExpenseDto response = new ExpenseDto();
         response.setExpenseId(saved.getId());
         response.setGroupId(saved.getGroup().getGroupId());
