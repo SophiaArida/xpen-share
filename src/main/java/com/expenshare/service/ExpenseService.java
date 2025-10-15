@@ -25,34 +25,23 @@ public class ExpenseService {
     private final ExpenseRepositoryFacade facade;
 //    private final KafkaProducer kafkaProducer;
     private final GroupService groupService;
+    private final UserService userService;
 
     //    public ExpenseService(ExpenseMapper expenseMapper, ExpenseShareMapper shareMapper,
 //                          ExpenseRepositoryFacade facade, KafkaProducer kafkaProducer) {
     public  ExpenseService(ExpenseMapper expenseMapper, ExpenseShareMapper shareMapper,
-                           ExpenseRepositoryFacade facade, GroupService groupService) {
+                           ExpenseRepositoryFacade facade, GroupService groupService, UserService userService) {
         this.expenseMapper = expenseMapper;
         this.shareMapper = shareMapper;
         this.facade = facade;
 //        this.kafkaProducer = kafkaProducer;
         this.groupService = groupService;
+        this.userService = userService;
     }
-
-//    public ExpenseDto createExpense(CreateExpenseRequest req) {
-//        ExpenseEntity entity = expenseMapper.toEntity(req);
-//        List<ExpenseShareEntity> shares = req.getShares().stream()
-//                .map(s -> shareMapper.toEntity(s, null))
-//                .collect(Collectors.toList());
-//
-//        ExpenseEntity saved = facade.saveWithShares(entity, shares);
-//        ExpenseDto dto = expenseMapper.toDto(saved, req.getShares());
-//
-////        kafkaProducer.publish("expense.added", dto);
-//        return dto;
-//    }
 
     public ExpenseDto createExpense(CreateExpenseRequest req) {
 
-        // 🔹 1. Get group members
+        // 1. Get group members
         GroupEntity group = groupService.getGroupEntity(req.getGroupId());
         List<Long> memberIds = group.getMembers().stream()
                 .map(gm -> gm.getUser().getUserId())
@@ -66,8 +55,9 @@ public class ExpenseService {
         }
 
         int memberCount = memberIds.size();
+        System.out.println("expenseService.createExpense: Done Step 1");
 
-        // 🔹 2. Each person’s equal share
+        // 2. Each person’s equal share
         List<ShareDto> split = new ArrayList<>();
 
         switch (req.getSplitType()) {
@@ -134,8 +124,9 @@ public class ExpenseService {
 
             default -> throw new ValidationException("Unsupported split type: " + req.getSplitType());
         }
+        System.out.println("expenseService.createExpense: Done Step 2");
 
-        // 🔹 4. Save expense
+        // 3. Save expense
         ExpenseEntity entity = new ExpenseEntity();
         entity.setGroup(groupService.getGroupEntity(req.getGroupId()));
         entity.setPaidBy(req.getPaidBy());
@@ -147,8 +138,7 @@ public class ExpenseService {
         List<ExpenseShareEntity> shareEntities = split.stream()
                 .map(dto -> {
                     ExpenseShareEntity s = new ExpenseShareEntity();
-//                    s.setUser();
-//                    s.setUser(dto.getUserId());
+                    s.setUser(userService.getUserEntity(dto.getUserId()));
                     s.setShareAmount(dto.getShare());
                     return s;
                 })
@@ -156,7 +146,7 @@ public class ExpenseService {
 
         ExpenseEntity saved = facade.saveWithShares(entity, shareEntities);
 
-        // 🔹 5. Build response
+        // 4. Build response
         ExpenseDto response = new ExpenseDto();
         response.setExpenseId(saved.getId());
         response.setGroupId(saved.getGroup().getGroupId());
@@ -165,9 +155,6 @@ public class ExpenseService {
         response.setDescription(saved.getDescription());
         response.setSplit(split);
         response.setCreatedAt(saved.getCreatedAt());
-
-        // 🔹 6. Publish Kafka event
-//        kafkaProducer.publish("expense.added", response);
 
         return response;
     }

@@ -64,6 +64,11 @@ public class SettlementEntity {
         CANCELED
     }
 
+    public enum Suggestions {
+        GREEDY_MIN_TRANSFERS,
+        SMALLEST_AMOUNTS_FIRST
+    }
+
     public Long getSettlementId() {
         return settlementId;
     }

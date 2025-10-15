@@ -1,5 +1,6 @@
 package com.expenshare.service;
 
+import com.expenshare.event.KafkaProducer;
 import com.expenshare.exception.ConflictException;
 import com.expenshare.repository.facade.UserRepositoryFacade;
 import com.expenshare.model.dto.user.CreateUserRequest;
@@ -13,10 +14,12 @@ public class UserService {
 
     private final UserRepositoryFacade facade;
     private final UserMapper mapper;
+    private final KafkaProducer kafkaProducer;
 
-    public UserService(UserRepositoryFacade facade, UserMapper mapper) {
+    public UserService(UserRepositoryFacade facade, UserMapper mapper, KafkaProducer kafkaProducer) {
         this.facade = facade;
         this.mapper = mapper;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public UserDto createUser(CreateUserRequest req) {
@@ -25,7 +28,10 @@ public class UserService {
         }
         UserEntity entity = mapper.toEntity(req);
         UserEntity saved = facade.create(entity);
-        return mapper.toDto(saved);
+        UserDto dto = mapper.toDto(saved);
+
+        kafkaProducer.publishUserCreatedEvent("{\"userId\": " + saved.getUserId() + "}");
+        return dto;
     }
 
     public UserDto getUser(Long id) {

@@ -31,4 +31,9 @@ public class ExpenseShareRepositoryFacade {
             }
         });
     }
+
+    public List<ExpenseShareEntity> findByGroupId(Long groupId) {
+        System.out.println("\n\nhello");
+        return repository.findByGroupId(groupId);
+    }
 }

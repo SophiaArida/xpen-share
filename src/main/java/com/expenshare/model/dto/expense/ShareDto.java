@@ -8,8 +8,16 @@ public class ShareDto {
     private Long userId;
     private BigDecimal share;
 
-    // getters and setters
+    // Constructors
+    public ShareDto() {
+    }
 
+    public ShareDto(Long userId, BigDecimal share) {
+        this.userId = userId;
+        this.share = share;
+    }
+
+    // getters and setters
     public Long getUserId() {
         return userId;
     }

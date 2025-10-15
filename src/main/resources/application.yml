@@ -21,3 +21,19 @@ jpa:
           auto: update            # or "create-drop" during development
         show_sql: true            # log SQL queries to console
         format_sql: true
+
+kafka:
+#  topics:
+#    userCreated: user.created
+#    groupCreated: group.created
+#    notificationWelcome: notification.welcome
+#    expenseAdded: expense.added
+#    settlementConfirmed: settlement.confirmed
+#    balanceReminder: balance.reminder
+  producer:
+    acks: all
+    retries: 3
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+  bootstrap:
+    servers: localhost:9092

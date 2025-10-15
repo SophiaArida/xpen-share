@@ -8,6 +8,7 @@ import jakarta.inject.Singleton;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Singleton
 public class SettlementRepositoryFacade {
@@ -28,6 +29,11 @@ public class SettlementRepositoryFacade {
     public BigDecimal owedAmount(long groupId, long fromUserId, long toUserId){
         //TODO: implement function
         return BigDecimal.ONE;
+    }
+
+    @ReadOnly
+    public List<SettlementEntity> findByGroupId(Long groupId) {
+        return settlementRepository.findByGroupId(groupId);
     }
 
 }

@@ -5,6 +5,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.inject.Singleton;
 
 @Produces
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler implements ExceptionHandler<Exception, HttpR
             return HttpResponse.serverError(new ErrorResponse("INTERNAL_ERROR", "An unexpected error occurred"));
         }
     }
-
+    @Serdeable
     public static class ErrorResponse {
         private String code;
         private String message;
