@@ -26,6 +26,7 @@ public class ExpenseShareEntity {
     @Column(name = "share_amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal shareAmount; // Positive = owes, Negative = is owed
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }

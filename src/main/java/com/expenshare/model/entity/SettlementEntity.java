@@ -69,6 +69,7 @@ public class SettlementEntity {
         SMALLEST_AMOUNTS_FIRST
     }
 
+    // Getters and Setters
     public Long getSettlementId() {
         return settlementId;
     }

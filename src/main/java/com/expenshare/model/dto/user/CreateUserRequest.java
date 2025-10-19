@@ -14,6 +14,7 @@ public class CreateUserRequest {
     private String mobileNumber;
     private AddressDto address;
 
+    // Getters and Setters
     public String getName() {
         return name;
     }

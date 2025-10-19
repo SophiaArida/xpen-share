@@ -47,6 +47,7 @@ public class ExpenseEntity {
         PERCENT
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }

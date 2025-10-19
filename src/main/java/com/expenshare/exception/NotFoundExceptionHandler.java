@@ -15,11 +15,9 @@ public class NotFoundExceptionHandler implements ExceptionHandler<NotFoundExcept
 
     @Override
     public HttpResponse<?> handle(HttpRequest request, NotFoundException exception) {
-        // Standard JSON error response
         return HttpResponse.notFound(new ErrorResponse("NOT_FOUND", exception.getMessage()));
     }
 
-    // Inner class or a dedicated DTO in `model/dto/common/`
     public static class ErrorResponse {
         public String code;
         public String message;

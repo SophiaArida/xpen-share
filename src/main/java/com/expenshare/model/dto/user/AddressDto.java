@@ -13,6 +13,7 @@ public class AddressDto {
     public String postalCode;
     public String country;
 
+    // Getters and Setters
     public String getLine1() {
         return line1;
     }

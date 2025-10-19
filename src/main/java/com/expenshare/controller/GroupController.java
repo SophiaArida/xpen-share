@@ -23,27 +23,18 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-
     @Post
     public HttpResponse<GroupDto> createGroup(@Body @Valid CreateGroupRequest request) {
         GroupDto group = groupService.createGroup(request);
         return HttpResponse.created(group);
     }
 
-    /**
-     * GET /api/groups/{id}
-     * Fetch group by id.
-     */
     @Get("/{id}")
     public HttpResponse<GroupDto> getGroup(Long id) {
         GroupDto group = groupService.getGroup(id);
         return HttpResponse.ok(group);
     }
 
-    /**
-     * POST /api/groups/{id}/members
-     * Add new members to a group.
-     */
     @Post("/{id}/members")
     public HttpResponse<GroupDto> addMembers(Long id, @Body @Valid AddMembersRequest request) {
         GroupDto updatedGroup = groupService.addMembers(id, request);
@@ -67,5 +58,4 @@ public class GroupController {
         SuggestionDto suggestion = groupService.suggestMinimalSettlement(groupId,request);
         return HttpResponse.ok(suggestion);
     }
-
 }

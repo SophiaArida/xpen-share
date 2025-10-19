@@ -27,7 +27,7 @@ public class CreateSettlementRequest {
     private String reference;
     @Nullable
     private Boolean enforcedOwedLimit;
-
+    //  Getters and setters
     public long getGroupId() {
         return groupId;
     }

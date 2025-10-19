@@ -47,7 +47,6 @@ public class SettlementService {
 
         SettlementEntity savedEntity = facade.createConfirmed(entity);
         // publish settlement.confirmed event
-        System.out.println("Hello 1");
         Map<String, Object> settlementPayload = Map.of(
                 "settlementId", savedEntity.getSettlementId(),
                 "groupId", savedEntity.getGroup().getGroupId(),
@@ -57,14 +56,12 @@ public class SettlementService {
                 "method", savedEntity.getMethod(),
                 "note", savedEntity.getNote()
         );
-        System.out.println("Hello 2");
 
         kafkaProducer.publish(
                 EventTopics.SETTLEMENT_CONFIRMED,
                 String.valueOf(savedEntity.getGroup().getGroupId()), // key = groupId
                 settlementPayload
         );
-        System.out.println("Hello 3");
         return mapper.toDto(savedEntity);
     }
 }

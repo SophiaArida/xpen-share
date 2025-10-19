@@ -56,7 +56,7 @@ public class GroupService {
     }
 
     public GroupDto createGroup(CreateGroupRequest request) {
-        // resolve all member IDs via the UserRepositoryFacade
+        // get members from ids
         List<UserEntity> members = request.getMembers().stream()
                 .map(userRepositoryFacade::getOrThrow) // throws NotFoundException if missing
                 .collect(Collectors.toList());
@@ -64,16 +64,13 @@ public class GroupService {
         // create the group
         GroupEntity group = new GroupEntity();
         group.setName(request.getName());
-
-        // persist the group
         GroupEntity savedGroup = groupRepositoryFacade.createGroup(group);
 
         // add members
         groupRepositoryFacade.addMembers(savedGroup, members);
-
-        // reload with members
         GroupEntity finalGroup = groupRepositoryFacade.findGroup(savedGroup.getGroupId())
                 .orElseThrow(() -> new NotFoundException("Group not found after creation"));
+
         // publish group created event
         List<Long> memberIds = members.stream()
                 .map(UserEntity::getUserId)
@@ -124,15 +121,11 @@ public class GroupService {
         GroupEntity group = groupRepositoryFacade.findGroup(groupId)
                 .orElseThrow(() -> new NotFoundException("Group not found"));
 
-        // resolve userIds via UserRepositoryFacade
+        // get users from ids
         List<UserEntity> users = request.getMembers().stream()
                 .map(userRepositoryFacade::getOrThrow) // throws NotFoundException if any missing
                 .collect(Collectors.toList());
-
-        // delegate membership insertion to the GroupRepositoryFacade
         groupRepositoryFacade.addMembers(group, users);
-
-        // reload updated group
         GroupEntity updatedGroup = groupRepositoryFacade.findGroup(group.getGroupId())
                 .orElseThrow(() -> new NotFoundException("Group not found after update"));
 
@@ -142,20 +135,13 @@ public class GroupService {
     public List<ShareDto> getGroupBalances(Long groupId) {
         // Get shares and settlements for the group
         List<ExpenseShareEntity> shares = expenseShareRepositoryFacade.findByGroupId(groupId);
-        System.out.println("\n\nbye");
         List<SettlementEntity> settlements = settlementRepositoryFacade.findByGroupId(groupId);
-
-        System.out.println("\n\n\n\nShares: " + shares);
 
         // Calculate  balances
         Map<Long, BigDecimal> userBalances = new HashMap<>();
         for (ExpenseShareEntity share : shares) {
 
             userBalances.merge(share.getUser().getUserId(), share.getShareAmount(), BigDecimal::add);
-        }
-        System.out.println("\n\n\n\nUser balances after shares: ");
-        for (Map.Entry<Long, BigDecimal> entry : userBalances.entrySet()) {
-            System.out.println("User ID: " + entry.getKey() + ", Balance: " + entry.getValue());
         }
         for (SettlementEntity settlement : settlements) {
             userBalances.merge(settlement.getFromUser().getUserId(), settlement.getAmount().negate(), BigDecimal::add);

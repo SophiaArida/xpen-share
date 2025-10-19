@@ -39,6 +39,7 @@ public class UserEntity {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    // Getters and Setters
     public Long getUserId() {
         return userId;
     }
@@ -97,6 +98,7 @@ public class UserEntity {
         private String postalCode;
         private String country;
 
+        // Getters and Setters
         public String getLine1() {
             return line1;
         }

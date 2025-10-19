@@ -23,13 +23,6 @@ jpa:
         format_sql: true
 
 kafka:
-#  topics:
-#    userCreated: user.created
-#    groupCreated: group.created
-#    notificationWelcome: notification.welcome
-#    expenseAdded: expense.added
-#    settlementConfirmed: settlement.confirmed
-#    balanceReminder: balance.reminder
   producer:
     acks: all
     retries: 3

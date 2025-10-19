@@ -20,7 +20,7 @@ public class SuggestionDto {
         this.totalTransfers = totalTransfers;
         this.strategy = strategy;
     }
-
+    // Getters and setters
     public long getGroupId() {
         return groupId;
     }

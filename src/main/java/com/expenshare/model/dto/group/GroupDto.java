@@ -11,35 +11,28 @@ public class GroupDto {
     private String name;
     private List<Long> members;
     private Instant createdAt;
-
+    //    getters and setters
     public long getGroupId() {
         return groupId;
     }
-
     public void setGroupId(long groupId) {
         this.groupId = groupId;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public List<Long> getMembers() {
         return members;
     }
-
     public void setMembers(List<Long> members) {
         this.members = members;
     }
-
     public Instant getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }

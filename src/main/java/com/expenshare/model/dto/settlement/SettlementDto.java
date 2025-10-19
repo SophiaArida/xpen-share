@@ -17,7 +17,7 @@ public class SettlementDto {
     private String note;
     private SettlementEntity.Status status;
     private Instant createdAt;
-
+    //  Getters and setters
     public long getSettlementId() {
         return settlementId;
     }

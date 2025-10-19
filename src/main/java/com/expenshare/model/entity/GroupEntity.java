@@ -27,17 +27,16 @@ public class GroupEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    // ✅ Correct relationship mapping
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<GroupMemberEntity> members = new HashSet<>();
 
-    // ✅ Constructors
+    // Constructors
     public GroupEntity() {}
     public GroupEntity(String name) {
         this.name = name;
     }
 
-    // ✅ Getters & Setters
+    // Getters & Setters
     public Long getGroupId() {
         return groupId;
     }

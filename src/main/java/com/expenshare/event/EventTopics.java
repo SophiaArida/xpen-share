@@ -6,6 +6,4 @@ public class EventTopics {
     public static final String NOTIFICATION_WELCOME = "notification.welcome";
     public static final String EXPENSE_ADDED = "expense.added";
     public static final String SETTLEMENT_CONFIRMED = "settlement.confirmed";
-    public static final String BALANCE_REMINDER = "balance.reminder";
-
 }

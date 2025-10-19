@@ -6,7 +6,6 @@ import io.micronaut.transaction.annotation.ReadOnly;
 import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Singleton;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -23,12 +22,6 @@ public class SettlementRepositoryFacade {
         e.setConfirmedAt(Instant.now());
         e.setStatus(SettlementEntity.Status.CONFIRMED);
         return settlementRepository.save(e);
-    }
-
-    @ReadOnly
-    public BigDecimal owedAmount(long groupId, long fromUserId, long toUserId){
-        //TODO: implement function
-        return BigDecimal.ONE;
     }
 
     @ReadOnly

@@ -13,6 +13,7 @@ public class UserDto {
     private AddressDto address;
     private Instant createdAt;
 
+    // Getters and Setters
     public Long getUserId() {
         return userId;
     }
